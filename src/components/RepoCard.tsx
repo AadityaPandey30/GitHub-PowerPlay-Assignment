@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { shortNumber } from '../utils/format'
+import type { Repo } from '../types/github'
 
 
 interface Props {

@@ -1,13 +1,9 @@
 
 import './App.css'
+import React from 'react'
+import Home from './pages/Home'
 
-function App() {
 
-  return (
-    <>
-      <h1 className='text-4xl text-green-500'>React-Vite Tailwind Setup ready</h1>
-    </>
-  )
+export default function App() {
+return <Home />
 }
-
-export default App
