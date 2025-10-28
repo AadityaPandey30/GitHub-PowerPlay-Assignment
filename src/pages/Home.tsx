@@ -181,7 +181,7 @@ export default function Home() {
       </main>
 
       <footer className="py-6 px-3 text-center text-sm text-gray-500">
-        Built by Aaditya • Uses GitHub public search API (30 results)
+        Built by <a className='underline' target='_blank' href='https://www.linkedin.com/in/aaditya-pandey-ab2829257'>Aaditya</a> • Uses GitHub public search API (30 results)
       </footer>
     </div>
   )
