@@ -169,7 +169,7 @@ export default function Home() {
 
         <section className="py-6">
           {loading && (
-            <div className="text-center text-gray-500 mx-auto w-fit">
+            <div className="text-center text-gray-500 mx-auto w-fit pt-8">
               <FadeLoader />
             </div>
           )}
@@ -180,7 +180,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="py-6 text-center text-sm text-gray-500">
+      <footer className="py-6 px-3 text-center text-sm text-gray-500">
         Built by Aaditya • Uses GitHub public search API (30 results)
       </footer>
     </div>
