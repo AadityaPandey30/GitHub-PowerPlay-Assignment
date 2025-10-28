@@ -15,24 +15,56 @@ export default React.memo(function RepoCard({ repo, bookmarked, onToggleBookmark
 
 
     return (
-        <article className="bg-white rounded-lg shadow p-4 flex gap-4 max-w-6xl">
-            <img src={repo.owner.avatar_url} alt={repo.owner.login} className="w-12 h-12 rounded" />
-            <div className="flex-1">
-                <div className="flex items-start justify-between gap-4">
-                    <a href={repo.html_url} target="_blank" rel="noreferrer" className="font-semibold">
+        <article
+            className="bg-white rounded-lg shadow p-4 flex flex-col sm:flex-row gap-4 w-full max-w-6xl mx-auto transition-transform duration-200 hover:scale-[1.01]"
+        >
+            {/* Avatar */}
+            <div className="flex-shrink-0 flex justify-center sm:justify-start">
+                <img
+                    src={repo.owner.avatar_url}
+                    alt={repo.owner.login}
+                    className="w-16 h-16 sm:w-14 sm:h-14 rounded-full object-cover border border-gray-200"
+                    loading="lazy"
+                />
+            </div>
+
+            {/* Repo details */}
+            <div className="flex flex-col flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                    <a
+                        href={repo.html_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold text-base sm:text-lg text-blue-600 hover:underline break-words"
+                    >
                         {repo.full_name}
                     </a>
-                    <div className="text-sm text-gray-600">{repo.language ?? '—'}</div>
+                    <span className="text-xs sm:text-sm text-gray-600 flex-shrink-0">
+                        {repo.language ?? '—'}
+                    </span>
                 </div>
-                <p className="text-sm text-gray-600 mt-1 text-left line-clamp-2">{repo.description ?? 'No description'}</p>
-                <div className="mt-3 flex items-center justify-between">
-                    <div className="text-sm text-gray-500">⭐ {shortNumber(repo.stargazers_count)}</div>
+
+                {/* Description (handles long text gracefully) */}
+                <p
+                    className="text-sm text-gray-700 mt-2 leading-snug text-center md:text-left line-clamp-3 break-words sm:line-clamp-2"
+                    title={repo.description ?? 'No description'}
+                >
+                    {repo.description ?? 'No description available.'}
+                </p>
+
+                {/* Footer section */}
+                <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div className="text-sm text-gray-500">
+                        ⭐ {shortNumber(repo.stargazers_count)}
+                    </div>
                     <button
                         onClick={handleBookmark}
-                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-md text-sm font-medium border ${bookmarked ? 'bg-yellow-100 border-yellow-400' : 'bg-white border-gray-200'
+                        className={`inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium border transition-colors duration-200 ${bookmarked
+                                ? 'bg-yellow-100 border-yellow-400 text-yellow-700 hover:bg-yellow-200'
+                                : 'bg-white border-gray-300 hover:bg-gray-50'
                             }`}
                     >
-                        ★ Bookmark
+                        ★ {bookmarked ? 'Bookmarked' : 'Bookmark'}
                     </button>
                 </div>
             </div>
