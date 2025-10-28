@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Header from '../components/Header'
 import SearchBar from '../components/SearchBar'
 import RepoList from '../components/RepoList'
@@ -7,6 +7,7 @@ import { searchRepos } from '../utils/api'
 import { useDebouncedValue } from '../hooks/useDebouncedValue'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import type { Repo } from '../types/github'
+import { FadeLoader } from 'react-spinners'
 
 
 export default function Home() {
@@ -98,7 +99,7 @@ return (
 
 
 <section className="py-6">
-{loading && <div className="text-center text-gray-500">Loading…</div>}
+{loading && <div className="text-center text-gray-500 mx-auto w-fit"><FadeLoader/></div>}
 {error && <div className="text-center text-red-500">Error: {error}</div>}
 {!loading && !error && <RepoList repos={visibleRepos} bookmarkedIds={bookmarkedSet} onToggleBookmark={onToggleBookmark} />}
 </section>

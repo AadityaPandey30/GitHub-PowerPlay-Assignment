@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+# GitHub Bookmarker (Micro-app)
+1. Install dependencies:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2. Run dev server:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+
+```bash
+npm run dev
 ```
+
+
+3. Lint (must pass with zero warnings/errors):
+
+
+```bash
+npm run lint
+```
+
+
+4. Build:
+
+
+```bash
+npm run build
+```
+
+
+## Key decisions & trade-offs
+
+
+- **State management**: Built-in React `useState` + `useEffect` and a tiny `useLocalStorage` hook are used. This keeps the app simple and avoids introducing external libraries for a micro-app. If the app grows, migrating to `useReducer` with Context for cross-cutting concerns would be the next step.
+
+
+- **Debouncing**: `useDebouncedValue` hook (timing: 350ms) to reduce API calls and improve UX. Implemented at input → debounced value boundary so UI remains responsive.
+
+
+- **Bookmarks**: Stored only the bookmarked repo IDs in `localStorage` (`bookmarked_repo_ids`) to keep storage small and allow refreshing repo list without duplicating repo objects. When showing bookmarked-only results, the app filters the currently loaded results by saved IDs. (Alternative: persist whole repo objects — trade-off: larger storage, but offline availability.)
+
+
+- **Performance**: Components memoized with `React.memo`, event handlers created with `useCallback`, derived structures (`Set`) with `useMemo` to keep lookups cheap.
+
+
+## Next improvements
+
+
+- Persist full repo objects to allow browsing bookmarks without a prior search.
+- Add pagination and sorting options (stars, recently updated).
+- Add authentication with GitHub to raise API rate limits.
+- Add tests (Jest + React Testing Library) and CI linting.
+
+
+## Deployment
+
+Deploy to Netlify by connecting the GitHub repo and using the standard `npm run build` step. The app is static and requires no server-side code.
+
+
+
+
+## How debouncing, bookmarking & state management are handled (short)
+
+
+- Debouncing: `useDebouncedValue` hook delays the query used to call the GitHub API by 350ms after the user stops typing.
+- Bookmarking: `useLocalStorage` hook reads/writes an array of bookmarked repo IDs; toggling updates this array and persists to `localStorage`.
+- State management: Local component state (useState/useEffect) plus the `useLocalStorage` hook. This keeps boundaries clear and the code minimal for a micro-app.
