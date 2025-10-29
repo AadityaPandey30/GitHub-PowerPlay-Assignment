@@ -39,11 +39,13 @@ npm run build
 - Persist full repo objects to allow browsing bookmarks without a prior search.
 - Add pagination and sorting options (stars, recently updated).
 - Add authentication with GitHub to raise API rate limits.
-- Add tests (Jest + React Testing Library) and CI linting.
+- Use Catching on Frontend and backend to improve the speed and reduce API load.
 
 ## Deployment
 
-Deploy to Netlify by connecting the GitHub repo and using the standard `npm run build` step. The app is static and requires no server-side code.
+Deployed to Netlify by connecting the GitHub repo and using the standard `npm run build` step. The app requires no server-side code.
+
+The app is live on: https://git-bookmarker.netlify.app/
 
 ## How debouncing, bookmarking & state management are handled (short)
 
